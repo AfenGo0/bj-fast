@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.bj.dao.XgHistoryDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.bj.entity.XgHistoryEntity" id="xgHistoryMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="lng" column="lng"/>
+        <result property="lat" column="lat"/>
+        <result property="xgTime" column="xg_time"/>
+        <result property="xgr" column="xgr"/>
+        <result property="xgcl" column="xgcl"/>
+        <result property="bjId" column="bj_id"/>
+    </resultMap>
+
+
+    <select id="xgzs" parameterType="String" resultType="Integer">
+        select count(1) num from bj_xg_history where xgr = #{xgr} and LEFT(xg_time,10) = #{date}
+    </select>
+
+    <select id="xgws" parameterType="String" resultType="Integer">
+        select COUNT(DISTINCT(`name`)) num from bj_xg_history where xgr = #{xgr} and LEFT(xg_time,10) = #{date}
+    </select>
+
+
+
+</mapper>

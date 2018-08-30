@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.bj.dao.BjUserDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.bj.entity.BjUserEntity" id="userMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="rfidDevice" column="rfid_device"/>
+        <result property="lightSbbh" column="light_sbbh"/>
+        <result property="rfidCard" column="rfid_card"/>
+        <result property="createTime" column="create_time"/>
+        <result property="token" column="token"/>
+    </resultMap>
+
+
+    <select id="lastInfo" parameterType="String" resultType="io.renren.modules.bj.bjEntity.RfidInfo">
+        select max(create_time) as create_time,device,sbbh,rfid_id,cph FROM
+            (SELECT max(create_time) as create_time,`device`,`sbbh`,`car_rfid_device`.`rfid_id`,cph
+             FROM `car_rfid_device` INNER JOIN `car_rfid_sb` `rfid_sb` ON `car_rfid_device`.`device`=`rfid_sb`.`rfid_device`
+             GROUP BY `device`
+             ORDER BY create_time desc) a
+        WHERE rfid_id = #{rfidId}
+        group by rfid_id
+    </select>
+
+</mapper>
